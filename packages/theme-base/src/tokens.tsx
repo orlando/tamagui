@@ -1,7 +1,8 @@
 import { allLightColors, darkColorsPostfixed } from '@tamagui/colors'
+import { createTokens } from '@tamagui/core'
 
 // acknowledge you need more granularity with .5s
-export const sizeKeys = [
+const sizeKeys = [
   'true',
   '0',
   '0.25',
@@ -32,10 +33,10 @@ export const sizeKeys = [
 ] as const
 
 // slightly more than double every 2 indices apart
-export const getSizeAt = (index: number) =>
+const getSizeAt = (index: number) =>
   index === 0 ? 0 : Math.round(Math.pow(1.6, index)) + Math.floor(3 * index)
 
-export const size: {
+const size: {
   [key in typeof sizeKeys[any]]: number
 } = Object.fromEntries(
   sizeKeys.map((key) => {
@@ -49,14 +50,14 @@ type SizeKeys = keyof Sizes
 const spaces = Object.entries(size).map(([k, v]) => [k, Math.round(v * 0.75)])
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 
-export const space: {
+const space: {
   [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),
 } as any
 
-export const zIndex = {
+const zIndex = {
   0: 0,
   1: 100,
   2: 200,
@@ -65,12 +66,12 @@ export const zIndex = {
   5: 500,
 }
 
-export const color = {
+const color = {
   ...allLightColors,
   ...darkColorsPostfixed,
 }
 
-export const radius = {
+const radius = {
   0: 0,
   1: 3,
   2: 5,
@@ -85,3 +86,11 @@ export const radius = {
   11: 42,
   12: 50,
 }
+
+export const tokens = createTokens({
+  color,
+  radius,
+  zIndex,
+  space,
+  size,
+})

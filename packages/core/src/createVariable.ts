@@ -13,7 +13,8 @@ export class Variable {
   variable: string | number
   key: string
 
-  constructor({ val, name, key }: VariableIn) {
+  constructor(props: VariableIn) {
+    const { val, name, key } = props
     // converting to px breaks rn
     this.val = isVariable(val) ? val.val : val
     this.name = name

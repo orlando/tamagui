@@ -53,7 +53,8 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     const props = state.fallbackProps || propsIn
-    const returnVariablesAs = state.resolveVariablesAs || !!props.animation ? 'value' : 'auto'
+    const returnVariablesAs =
+      state.resolveVariablesAs === 'value' || !!props.animation ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
@@ -96,6 +97,8 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
 
     if (value) {
       if (value[0] === '$') {
+        // prettier-ignore
+        console.log('resolv', returnVariablesAs, value, getToken(key, value, conf, theme, fontFamily, returnVariablesAs))
         value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs)
       } else if (isVariable(value)) {
         value = getVariableValue(value, returnVariablesAs)
@@ -110,6 +113,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   return mapper
 }
 
+// TODO move this into the actual atomic style getter
 const resolveTokens = (
   input: Object,
   conf: TamaguiInternalConfig,
@@ -124,6 +128,7 @@ const resolveTokens = (
     if (isVariable(val)) {
       res[fKey] =
         resolveAs === 'variable' ? val : !isWeb || resolveAs === 'value' ? val.val : val.variable
+      console.log('resolving as', resolveAs, res[fKey])
     } else if (typeof val === 'string') {
       const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, resolveAs) : val
       res[fKey] = fVal
@@ -161,6 +166,7 @@ const getToken = (
   let valOrVar: any
   let hasSet = false
   if (value in theme) {
+    console.log('its in theme', value, theme[value], theme)
     valOrVar = theme[value]
     hasSet = true
   } else {
@@ -207,6 +213,7 @@ const getToken = (
 }
 
 function getVariableValue(valOrVar: Variable | any, resolveAs: ResolveVariableTypes = 'auto') {
+  console.log('WTF', valOrVar, isVariable(valOrVar), resolveAs)
   if (isVariable(valOrVar)) {
     if (resolveAs === 'variable') {
       return valOrVar

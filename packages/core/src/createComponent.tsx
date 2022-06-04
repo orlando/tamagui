@@ -151,6 +151,7 @@ export function createComponent<
     const setStateShallow = createShallowUpdate(set_)
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
+    console.log('shouldAvoidClasses', shouldAvoidClasses)
     const splitStyles = useSplitStyles(
       props,
       staticConfig,

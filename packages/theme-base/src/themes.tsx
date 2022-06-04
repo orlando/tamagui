@@ -3,7 +3,9 @@ import { allDarkColors, allLightColors } from '@tamagui/colors'
 import { Variable, getVariableValue } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
-import { color } from './tokens'
+import { tokens } from './tokens'
+
+const { color } = tokens
 
 // spaghetti ahead
 
@@ -349,6 +351,8 @@ const allThemes = {
 export const themes: {
   [key in keyof typeof allThemes]: typeof baseThemes['light']
 } = allThemes as any
+
+console.log('themes', themes)
 
 // TODO
 // export function createThemes(props: {

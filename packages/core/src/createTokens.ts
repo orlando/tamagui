@@ -5,6 +5,7 @@ import { CreateTokens } from './types'
 // tokens.color.dark.red ===> { var: `color-dark-red`, val: '' }
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
+  console.log('create tokens')
   if (process.env.NODE_ENV === 'development') {
     validateTokens(tokens)
   }

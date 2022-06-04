@@ -5,7 +5,7 @@ export declare class Variable {
     val: string | number;
     variable: string | number;
     key: string;
-    constructor({ val, name, key }: VariableIn);
+    constructor(props: VariableIn);
     toString(): string;
 }
 declare type VariableIn = {
